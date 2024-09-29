@@ -19,6 +19,8 @@ import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import "./index.css";
 import { menus } from "../../../config/menu";
+import { RootState } from "@/stores";
+import { useSelector } from "react-redux";
 
 const SearchInput = () => {
   const { token } = theme.useToken();
@@ -63,6 +65,7 @@ interface Props {
 // @ts-ignore
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
+  const loginUser = useSelector((state: RootState) => state.loginUser);
 
   return (
     <div
@@ -85,9 +88,9 @@ export default function BasicLayout({ children }: Props) {
         }
         location={{ pathname }}
         avatarProps={{
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+          src: loginUser.userAvatar || "/assets/logo.png",
           size: "small",
-          title: "七妮妮",
+          title: loginUser.userName || "InterviewAce",
           render: (props, dom) => (
             <Dropdown
               menu={{
