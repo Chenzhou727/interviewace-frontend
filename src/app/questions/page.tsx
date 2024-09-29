@@ -1,12 +1,13 @@
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 import { Button } from "antd";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
 
 export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <Button type="primary">Primary Button</Button>
+        <Button type="primary">题目大全</Button>
         <Image
           className={styles.logo}
           src="https://nextjs.org/icons/next.svg"
