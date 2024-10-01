@@ -2,61 +2,26 @@
 
 import {
   GithubFilled,
-  InfoCircleFilled,
   LogoutOutlined,
-  PlusCircleFilled,
-  QuestionCircleFilled,
   SearchOutlined,
 } from "@ant-design/icons";
-import type { ProSettings } from "@ant-design/pro-components";
 import { ProLayout } from "@ant-design/pro-components";
 
-import { Dropdown, Input, theme } from "antd";
+import { Dropdown, Input, message, theme } from "antd";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import GlobalFooter from "@/components/GlobalFooter";
 import "./index.css";
 import { menus } from "../../../config/menu";
-import { RootState } from "@/stores";
-import { useSelector } from "react-redux";
-
-const SearchInput = () => {
-  const { token } = theme.useToken();
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-          backgroundColor: token.colorBgTextHover,
-        }}
-        prefix={
-          <SearchOutlined
-            style={{
-              color: token.colorTextLightSolid,
-            }}
-          />
-        }
-        placeholder="搜索题目"
-        variant="borderless"
-      />
-    </div>
-  );
-};
+import { AppDispatch, RootState } from "@/stores";
+import { useDispatch, useSelector } from "react-redux";
+import getAccessibleMenus from "@/access/menuAccess";
+import { userLogoutUsingPost } from "@/api/userController";
+import { setLoginUser } from "@/stores/loginUser";
+import { DEFAULT_USER } from "@/constants/user";
+import SearchInput from "@/layouts/BasicLayout/components/SearchInput";
 
 interface Props {
   children: React.ReactNode;
@@ -66,6 +31,24 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
   const loginUser = useSelector((state: RootState) => state.loginUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
+
+  /**
+   * 用户注销
+   */
+  const userLogout = async () => {
+    try {
+      await userLogoutUsingPost();
+      message.success("已退出登录");
+      dispatch(setLoginUser(DEFAULT_USER));
+      router.push("/user/login");
+    } catch (e) {
+      // @ts-ignore
+      message.error("操作失败，" + e.message);
+    }
+    return;
+  };
 
   return (
     <div
@@ -91,21 +74,41 @@ export default function BasicLayout({ children }: Props) {
           src: loginUser.userAvatar || "/assets/logo.png",
           size: "small",
           title: loginUser.userName || "InterviewAce",
-          render: (props, dom) => (
-            <Dropdown
-              menu={{
-                items: [
-                  {
-                    key: "logout",
-                    icon: <LogoutOutlined />,
-                    label: "退出登录",
+          render: (props, dom) => {
+            if (!loginUser.id) {
+              return (
+                <div
+                  onClick={() => {
+                    router.push("/user/login");
+                  }}
+                >
+                  {dom}
+                </div>
+              );
+            }
+            return (
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: "logout",
+                      icon: <LogoutOutlined />,
+                      label: "退出登录",
+                    },
+                  ],
+                  onClick: async (event: { key: React.Key }) => {
+                    const { key } = event;
+                    // 退出登录
+                    if (key === "logout") {
+                      userLogout();
+                    }
                   },
-                ],
-              }}
-            >
-              {dom}
-            </Dropdown>
-          ),
+                }}
+              >
+                {dom}
+              </Dropdown>
+            );
+          },
         }}
         actionsRender={(props) => {
           if (props.isMobile) return [];
@@ -134,7 +137,7 @@ export default function BasicLayout({ children }: Props) {
         }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser, menus);
         }}
         //菜单项的渲染
         menuItemRender={(item, dom) => (

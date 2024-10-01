@@ -7,6 +7,8 @@ import { Provider, useDispatch } from "react-redux";
 import store, { AppDispatch } from "@/stores";
 import { getLoginUserUsingGet } from "@/api/userController";
 import { setLoginUser } from "@/stores/loginUser";
+import AccessLayout from "@/access/AccessLayout";
+import ACCESS_ENUM from "@/access/accessEnum";
 
 /**
  * 初始化布局（多封装一层，使得能调用 useDispatch）
@@ -25,11 +27,18 @@ const InitLayout: React.FC<
     // 获取用户信息
     const res = await getLoginUserUsingGet();
     if (res.data) {
+      // @ts-ignore
+      dispatch(setLoginUser(res.data));
     } else {
-      setTimeout(() => {
-        const testUser = { userName: "测试登录", id: 1 };
-        dispatch(setLoginUser(testUser));
-      }, 3000);
+      // 测试登录
+      // setTimeout(() => {
+      //   const testUser = {
+      //     userName: "测试登录",
+      //     id: 1,
+      //     userRole: ACCESS_ENUM.ADMIN,
+      //   };
+      //   dispatch(setLoginUser(testUser));
+      // }, 3000);
     }
   }, []);
 
@@ -51,7 +60,9 @@ export default function RootLayout({
         <AntdRegistry>
           <Provider store={store}>
             <InitLayout>
-              <BasicLayout>{children}</BasicLayout>
+              <BasicLayout>
+                <AccessLayout>{children}</AccessLayout>
+              </BasicLayout>
             </InitLayout>
           </Provider>
         </AntdRegistry>
