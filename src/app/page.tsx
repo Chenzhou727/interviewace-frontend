@@ -1,4 +1,3 @@
-"use server";
 import Title from "antd/es/typography/Title";
 import { Divider, Flex } from "antd";
 import "./index.css";
@@ -7,6 +6,9 @@ import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
 import QuestionBankList from "@/components/QuestionBankList";
 import QuestionList from "@/components/QuestionList";
+
+// 本页面使用服务端渲染，禁用静态生成
+export const dynamic = "force-dynamic";
 
 /**
  * 主页
@@ -49,7 +51,7 @@ export default async function HomePage() {
       <QuestionBankList questionBankList={questionBankList} />
       <Divider />
       <Title level={3}>最新题目</Title>
-      <QuestionList questionList={questionList} />
+      <QuestionList questionList={questionList} cardTitle="" />
     </div>
   );
 }

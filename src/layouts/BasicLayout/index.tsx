@@ -4,6 +4,7 @@ import {
   GithubFilled,
   LogoutOutlined,
   SearchOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 
@@ -91,6 +92,11 @@ export default function BasicLayout({ children }: Props) {
                 menu={{
                   items: [
                     {
+                      key: "userCenter",
+                      icon: <UserOutlined />,
+                      label: "个人中心",
+                    },
+                    {
                       key: "logout",
                       icon: <LogoutOutlined />,
                       label: "退出登录",
@@ -101,6 +107,8 @@ export default function BasicLayout({ children }: Props) {
                     // 退出登录
                     if (key === "logout") {
                       userLogout();
+                    } else if (key === "userCenter") {
+                      router.push("/user/center");
                     }
                   },
                 }}
@@ -116,7 +124,7 @@ export default function BasicLayout({ children }: Props) {
             <SearchInput key="search" />,
             <a
               key="github"
-              href="https://github.com/liyupi/mianshiya-next"
+              href="https://github.com/chenzhou727"
               target="_blank"
             >
               <GithubFilled key="GithubFilled" />
@@ -131,10 +139,6 @@ export default function BasicLayout({ children }: Props) {
             </a>
           );
         }}
-        //渲染底部栏
-        footerRender={() => {
-          return <GlobalFooter />;
-        }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => {
           return getAccessibleMenus(loginUser, menus);
@@ -145,6 +149,10 @@ export default function BasicLayout({ children }: Props) {
             {dom}
           </Link>
         )}
+        //渲染底部栏
+        footerRender={() => {
+          return <GlobalFooter />;
+        }}
       >
         {children}
       </ProLayout>

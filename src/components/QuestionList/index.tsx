@@ -2,6 +2,7 @@
 import { Card, List, Tag } from "antd";
 import "./index.css";
 import Link from "next/link";
+import TagList from "@/components/TagList";
 
 interface Props {
   questionBankId?: number;
@@ -28,7 +29,7 @@ const QuestionList = (props: Props) => {
       <List
         dataSource={questionList}
         renderItem={(item: API.QuestionVO) => (
-          <List.Item extra={tagList(item.tagList)}>
+          <List.Item extra={<TagList tagList={item.tagList} />}>
             <List.Item.Meta
               title={
                 <Link

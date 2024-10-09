@@ -16,7 +16,6 @@ import QuestionBankVO = API.QuestionBankVO;
 export default async function BankPage({ params }) {
   const { questionBankId } = params;
   let bank = undefined;
-  let bankQuestionPage = undefined;
 
   try {
     const res = await getQuestionBankVoByIdUsingGet({

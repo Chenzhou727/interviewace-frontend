@@ -15,7 +15,6 @@ import Link from "next/link";
  * 题库的题目详情页
  * @constructor
  */
-// @ts-ignore
 export default async function BankQuestionPage({ params }) {
   const { questionBankId, questionId } = params;
   //获取题库详情
@@ -41,10 +40,9 @@ export default async function BankQuestionPage({ params }) {
     const res = await getQuestionVoByIdUsingGet({
       id: questionId,
     });
-    question = res.data;
+    question = res.data as QuestionVO;
   } catch (e) {
-    // @ts-ignore
-    console.error("获取题目列表失败，" + e.message);
+    console.error("获取题目详情失败，" + e.message);
   }
   if (!question) {
     return <div>获取题目详情失败，请刷新重试</div>;

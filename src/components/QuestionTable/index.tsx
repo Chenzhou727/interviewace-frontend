@@ -3,7 +3,10 @@ import { TablePaginationConfig } from "antd";
 import { useRef, useState } from "react";
 import { ActionType, ProColumns, ProTable } from "@ant-design/pro-components";
 import TagList from "@/components/TagList";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import {
+  listQuestionVoByPageUsingPost,
+  searchQuestionVoByPageUsingPost,
+} from "@/api/questionController";
 import Link from "next/link";
 
 interface Props {
@@ -18,6 +21,7 @@ interface Props {
  */
 export default function QuestionTable(props: Props) {
   const { defaultQuestionList, defaultTotal, defaultSearchParams = {} } = props;
+  // @ts-ignore
   const [questionList, setQuestionList] = useState<API.QuestionVO[]>(
     defaultQuestionList || [],
   );
@@ -28,15 +32,24 @@ export default function QuestionTable(props: Props) {
   /**
    * 表格列配置
    */
+  // @ts-ignore
   const columns: ProColumns<API.QuestionVO>[] = [
+    {
+      title: "搜索",
+      dataIndex: "searchText",
+      valueType: "text",
+      hideInTable: true,
+    },
     {
       title: "标题",
       dataIndex: "title",
       valueType: "text",
+      hideInSearch: true,
       render: (_, record) => {
         return <Link href={`/question/${record.id}`}>{record.title}</Link>;
       },
     },
+
     {
       title: "标签",
       dataIndex: "tagList",
@@ -83,8 +96,7 @@ export default function QuestionTable(props: Props) {
           const sortField = Object.keys(sort)?.[0] || "createTime";
           const sortOrder = sort?.[sortField] || "descend";
 
-          // @ts-ignore
-          const { data, code } = await listQuestionVoByPageUsingPost({
+          const { data, code } = await searchQuestionVoByPageUsingPost({
             ...params,
             sortField,
             sortOrder,

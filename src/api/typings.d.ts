@@ -11,6 +11,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListInt_ = {
+    code?: number;
+    data?: number[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -36,23 +42,18 @@ declare namespace API {
   };
 
   type BaseResponsePageQuestion_ = {
-    total(total: any): number | undefined;
-    records: never[];
     code?: number;
     data?: PageQuestion_;
     message?: string;
   };
 
   type BaseResponsePageQuestionBank_ = {
-    total(total: any): number | undefined;
-    records: never[];
     code?: number;
     data?: PageQuestionBank_;
     message?: string;
   };
 
   type BaseResponsePageQuestionBankQuestion_ = {
-    records: never[];
     code?: number;
     data?: PageQuestionBankQuestion_;
     message?: string;
@@ -65,15 +66,12 @@ declare namespace API {
   };
 
   type BaseResponsePageQuestionBankVO_ = {
-    records: never[];
     code?: number;
     data?: PageQuestionBankVO_;
     message?: string;
   };
 
   type BaseResponsePageQuestionVO_ = {
-    total: number;
-    records: never[];
     code?: number;
     data?: PageQuestionVO_;
     message?: string;
@@ -104,9 +102,6 @@ declare namespace API {
   };
 
   type BaseResponseQuestionBankVO_ = {
-    description: ReactNode;
-    title: ReactNode;
-    picture: ReactNode;
     code?: number;
     data?: QuestionBankVO;
     message?: string;
@@ -151,6 +146,41 @@ declare namespace API {
     id?: number;
   };
 
+  type doLoginUsingDELETEParams = {
+    /** password */
+    password?: string;
+    /** username */
+    username?: string;
+  };
+
+  type doLoginUsingGETParams = {
+    /** password */
+    password?: string;
+    /** username */
+    username?: string;
+  };
+
+  type doLoginUsingPATCHParams = {
+    /** password */
+    password?: string;
+    /** username */
+    username?: string;
+  };
+
+  type doLoginUsingPOSTParams = {
+    /** password */
+    password?: string;
+    /** username */
+    username?: string;
+  };
+
+  type doLoginUsingPUTParams = {
+    /** password */
+    password?: string;
+    /** username */
+    username?: string;
+  };
+
   type getPostVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -184,6 +214,11 @@ declare namespace API {
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getUserSignInUsingPOSTParams = {
+    /** year */
+    year?: number;
   };
 
   type getUserVOByIdUsingGETParams = {
@@ -491,6 +526,16 @@ declare namespace API {
     questionId?: number;
   };
 
+  type QuestionBankQuestionBatchAddRequest = {
+    questionBankId?: number;
+    questionIdList?: number[];
+  };
+
+  type QuestionBankQuestionBatchRemoveRequest = {
+    questionBankId?: number;
+    questionIdList?: number[];
+  };
+
   type QuestionBankQuestionQueryRequest = {
     current?: number;
     id?: number;
@@ -537,6 +582,10 @@ declare namespace API {
     updateTime?: string;
     user?: UserVO;
     userId?: number;
+  };
+
+  type QuestionBatchDeleteRequest = {
+    questionIdList?: number[];
   };
 
   type QuestionEditRequest = {

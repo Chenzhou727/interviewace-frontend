@@ -1,7 +1,10 @@
 "use server";
 import Title from "antd/es/typography/Title";
 import "./index.css";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import {
+  listQuestionVoByPageUsingPost,
+  searchQuestionVoByPageUsingPost,
+} from "@/api/questionController";
 import QuestionTable from "@/components/QuestionTable";
 
 /**
@@ -15,8 +18,8 @@ export default async function QuestionsPage({ searchParams }) {
   let total: number = 0;
 
   try {
-    const questionRes = await listQuestionVoByPageUsingPost({
-      title: searchText,
+    const questionRes = await searchQuestionVoByPageUsingPost({
+      searchText,
       pageSize: 12,
       sortField: "createTime",
       sortOrder: "desc",
@@ -29,7 +32,7 @@ export default async function QuestionsPage({ searchParams }) {
   }
 
   return (
-    <div id="questionsPage" className="max-width-content">
+    <div id="questionPage" className="max-width-content">
       <Title level={3}>题目大全</Title>
       <QuestionTable
         defaultQuestionList={questionList}

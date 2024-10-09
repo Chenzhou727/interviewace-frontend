@@ -10,6 +10,7 @@ import * as postThumbController from './postThumbController';
 import * as questionController from './questionController';
 import * as questionBankController from './questionBankController';
 import * as questionBankQuestionController from './questionBankQuestionController';
+import * as testSaTokenController from './testSaTokenController';
 import * as userController from './userController';
 export default {
   wxMpController,
@@ -20,5 +21,6 @@ export default {
   questionController,
   questionBankController,
   questionBankQuestionController,
+  testSaTokenController,
   userController,
 };

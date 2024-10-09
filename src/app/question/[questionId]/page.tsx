@@ -1,9 +1,10 @@
-import { getQuestionBankVoByIdUsingGet } from "@/api/questionBankController";
-import { Flex } from "antd";
+"use server";
 import React from "react";
 import { getQuestionVoByIdUsingGet } from "@/api/questionController";
 import QuestionCard from "@/components/QuestionCard";
 import "./index.css";
+import { Content } from "antd/es/layout/layout";
+import QuestionVO = API.QuestionVO;
 
 /**
  * 题目详情页面
@@ -17,7 +18,7 @@ export default async function QuestionPage({ params }) {
     const questionRes = await getQuestionVoByIdUsingGet({
       id: questionId,
     });
-    question = questionRes.data;
+    question = questionRes.data as QuestionVO;
   } catch (e) {
     // @ts-ignore
     console.error("获取题目详情失败，" + e.message);
